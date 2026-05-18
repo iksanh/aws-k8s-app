@@ -34,6 +34,14 @@ pipeline {
                 sh '. venv/bin/activate && pytest -v'
             }
         }
+
+        stage('Build Image') {
+            steps {
+                echo '=== Building Docker image ==='
+                sh 'docker build -t aws-k8s-app:${BUILD_NUMBER} -t aws-k8s-app:latest .'
+                sh 'docker images aws-k8s-app'
+            }
+        }
     }
 
     post {

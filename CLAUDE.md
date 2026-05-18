@@ -11,8 +11,9 @@ This is a **learning project** for CI/CD with FastAPI. The goal is to understand
 - Python 3.11+, FastAPI, Uvicorn (ASGI server)
 - pytest + httpx (testing)
 - ruff (linter & formatter)
-- GitHub Actions (CI/CD)
-- Docker (optional, later stages)
+- Jenkins (CI/CD) — declarative pipeline in `Jenkinsfile`
+- Docker (image build runs in the pipeline)
+- Self-managed Kubernetes (lab cluster — deployment target for Stage 7)
 
 ## Commands
 
@@ -43,9 +44,11 @@ app/
 tests/
   __init__.py
   test_main.py
-.github/workflows/ci.yml
+Jenkinsfile        # declarative CI pipeline
+Dockerfile         # image build (used by Jenkins "Build Image" stage)
+.dockerignore
 requirements.txt
-Dockerfile         # optional
+k8s/               # Kubernetes manifests (Stage 7 — not yet)
 ```
 
 ## Code Conventions
@@ -55,22 +58,22 @@ Dockerfile         # optional
 - Run `ruff check . && ruff format .` before committing.
 - Commit messages follow **conventional commits**: `feat:`, `fix:`, `test:`, `ci:`, `docs:`, `refactor:`.
 
-## CI Pipeline Structure (`.github/workflows/ci.yml`)
+## CI Pipeline Structure (`Jenkinsfile`)
 
-Run sequentially; fail the PR if any step is red:
-1. Checkout → Setup Python → `pip install -r requirements.txt` → `ruff check .` → `pytest`
+Declarative pipeline, stages run sequentially; fail the build if any stage is red:
+1. Setup Python → Install Dependencies (fresh venv) → Lint (`ruff check .`) → Test (`pytest`) → Build Image (`docker build`)
 
-Trigger on `push` to `main` and all `pull_request` events.
+The Jenkins agent must have `docker` available and the Jenkins user must be in the `docker` group for the Build Image stage to succeed.
 
 ## Learning Stages (Roadmap)
 
-- [ ] Stage 1 — `GET /health` returning `{"status": "ok"}`
-- [ ] Stage 2 — First test for `/health` using `TestClient`
-- [ ] Stage 3 — Setup `ruff`, ensure clean code
-- [ ] Stage 4 — `ci.yml` running lint + test on GitHub Actions
-- [ ] Stage 5 — Simple CRUD endpoint (in-memory, no database yet)
-- [ ] Stage 6 — Dockerfile + image build workflow
-- [ ] Stage 7 — Auto-deploy to Railway / Fly.io / Render
+- [x] Stage 1 — `GET /health` returning `{"status": "ok"}`
+- [x] Stage 2 — First test for `/health` using `TestClient`
+- [x] Stage 3 — Setup `ruff`, ensure clean code
+- [x] Stage 4 — `Jenkinsfile` running lint + test on Jenkins 
+- [x] Stage 5 — Simple CRUD endpoint (in-memory, no database yet)
+- [x] Stage 6 — Dockerfile + image build workflow
+- [ ] Stage 7 — Deploy to self-managed Kubernetes lab cluster (deferred — user will start later)
 
 ## How to Help
 
