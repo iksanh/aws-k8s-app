@@ -1,0 +1,2 @@
+go mod init github.com/iksanh/aws-k8s-app
+go get github.com/go-chi/chi/v5
