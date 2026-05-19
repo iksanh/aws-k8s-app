@@ -2,7 +2,7 @@ pipeline {
        agent any
 
        environment {
-           DOCKERHUB_USER = 'iksanh'                    // ← GANTI dengan username Docker Hub kamu
+           DOCKERHUB_USER = 'iksanhariji'                    // ← GANTI dengan username Docker Hub kamu
            IMAGE_NAME     = "${DOCKERHUB_USER}/aws-k8s-app"
            IMAGE_TAG      = "${BUILD_NUMBER}"
        }
