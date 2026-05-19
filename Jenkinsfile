@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+     environment {
+        DOCKERHUB_USER = 'iksanhariji'                    // ganti dengan username Docker Hub kamu
+        IMAGE_NAME     = "${DOCKERHUB_USER}/aws-k8s-app"
+        IMAGE_TAG      = "${BUILD_NUMBER}"
+    }
     
     stages {
         stage('Setup Python') {
@@ -39,15 +44,32 @@ pipeline {
         stage('Build Image') {
             steps {
                 echo '=== Building Docker image ==='
-                sh 'docker build -t aws-k8s-app:${BUILD_NUMBER} -t aws-k8s-app:latest .'
-                sh 'docker images aws-k8s-app'
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest ."
+                sh "docker images ${IMAGE_NAME}"
             }
         }
+        stage('Push Image') {
+            steps {
+                echo '=== Pushing to Docker Hub ==='
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DH_USER',
+                    passwordVariable: 'DH_PASS'
+                )]) {
+                    sh 'echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin'
+                    sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker push ${IMAGE_NAME}:latest"
+                    sh 'docker logout'
+                }
+            }
+        }
+
     }
 
     post {
         always {
             echo 'Pipeline finished.'
+            sh 'docker logout || true'  // Pastikan logout dari Docker Hub
         }
         success {
             echo '✅ Build SUCCESS — all checks passed.'
