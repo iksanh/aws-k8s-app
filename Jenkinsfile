@@ -1,8 +1,8 @@
 pipeline {
     agent any
 
-    triger {
-        pollSCM('H/2 * * * *') // Polls the SCM every 5 minutes
+    triggers {
+        pollSCM('H/2 * * * *') // Polls the SCM every 2 minutes
     }
     stages {
         stage('Setup Python') {
