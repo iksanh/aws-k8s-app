@@ -6,7 +6,6 @@ app = FastAPI()
 app.include_router(items.router)
 
 
-
 @app.get("/health")
-def health():
-    return {"status": "ok", "version": "v2-gitops-test"}
+def health() -> dict[str, str]:
+    return {"status": "ok update vs2"}
