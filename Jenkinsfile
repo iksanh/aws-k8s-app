@@ -10,7 +10,7 @@ pipeline {
         // Manifest repo config — GANTI sesuai punyamu
         MANIFEST_REPO   = 'github.com/iksanh/aws-k8s-manifests.git'
         MANIFEST_BRANCH = 'main'
-        MANIFEST_FILE   = 'apps/fastapi/deployment.yaml'
+        MANIFEST_FILE   = 'apps/fastapi/deployment.yml'
 
         // Git identity untuk commit dari Jenkins
         GIT_USER_EMAIL  = 'iksanhariji@gmail.com'
