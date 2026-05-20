@@ -8,7 +8,7 @@ pipeline {
         IMAGE_TAG       = "${BUILD_NUMBER}"
 
         // Manifest repo config — GANTI sesuai punyamu
-        MANIFEST_REPO   = 'https://github.com/iksanh/aws-k8s-manifests.git'
+        MANIFEST_REPO   = 'github.com/iksanh/aws-k8s-manifests.git'
         MANIFEST_BRANCH = 'main'
         MANIFEST_FILE   = 'apps/fastapi/deployment.yaml'
 
