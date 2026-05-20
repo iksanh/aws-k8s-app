@@ -12,8 +12,11 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY app ./app
 
-RUN useradd --create-home --shell /bin/bash appuser && chown -R appuser:appuser /app
-USER appuser
+RUN groupadd --gid 1000 appuser \
+ && useradd --uid 1000 --gid 1000 --create-home --shell /bin/bash appuser \
+ && chown -R 1000:1000 /app
+
+USER 1000:1000
 
 EXPOSE 8000
 
