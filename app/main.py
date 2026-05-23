@@ -8,4 +8,4 @@ app.include_router(items.router)
 
 @app.get("/health")
 def health() -> dict[str, str]:
-    return {"status": "ok update vs2"}
+    return {"status": "running"}
